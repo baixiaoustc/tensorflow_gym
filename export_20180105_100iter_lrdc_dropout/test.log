@@ -1,0 +1,227 @@
+nohup: ignoring input
+state:7056 action:6
+2018-01-05 17:30:43.237428: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-05 17:30:43.237449: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-05 17:30:43.237454: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-05 17:30:43.237458: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-05 17:30:43.237462: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-05 17:30:44.149929: I tensorflow/core/common_runtime/gpu/gpu_device.cc:938] Found device 0 with properties: 
+name: GeForce GTX TITAN X
+major: 5 minor: 2 memoryClockRate (GHz) 1.076
+pciBusID 0000:03:00.0
+Total memory: 11.92GiB
+Free memory: 11.81GiB
+2018-01-05 17:30:44.149961: I tensorflow/core/common_runtime/gpu/gpu_device.cc:959] DMA: 0 
+2018-01-05 17:30:44.149968: I tensorflow/core/common_runtime/gpu/gpu_device.cc:969] 0:   Y 
+2018-01-05 17:30:44.149979: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1028] Creating TensorFlow device (/gpu:0) -> (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:03:00.0)
+1. Direct Input: 		(?, 84, 84, 1)
+2. Conv1 			(?, 21, 21, 16)
+3. Conv2 			(?, 11, 11, 32)
+4.1 Reshape before Affine1 	(?, 3872)
+4.2 Affine1 			(?, 256)
+4.3 Dropout 			(?, 256)
+5. Affine2 			(?, 6)
+/home/liurygo/anaconda2/lib/python2.7/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+episode:0 steps:399 total_reward:20
+random count 399 with epsilon:1.000000, lr:0.002000
+episode:1 steps:716 total_reward:120
+random count 711 with epsilon:0.991000, lr:0.001981
+episode:2 steps:793 total_reward:395
+random count 783 with epsilon:0.982000, lr:0.001962
+episode:3 steps:1000 total_reward:215
+random count 974 with epsilon:0.973000, lr:0.001943
+episode:4 steps:736 total_reward:175
+random count 705 with epsilon:0.964000, lr:0.001924
+episode:5 steps:392 total_reward:90
+random count 377 with epsilon:0.955000, lr:0.001905
+episode:6 steps:396 total_reward:65
+random count 371 with epsilon:0.946000, lr:0.001886
+episode:7 steps:1000 total_reward:485
+random count 943 with epsilon:0.937000, lr:0.001867
+episode:8 steps:383 total_reward:30
+random count 357 with epsilon:0.928000, lr:0.001848
+episode:9 steps:614 total_reward:110
+random count 561 with epsilon:0.919000, lr:0.001829
+episode:10 steps:435 total_reward:30
+random count 396 with epsilon:0.910000, lr:0.001810
+episode:11 steps:643 total_reward:140
+random count 578 with epsilon:0.901000, lr:0.001791
+episode:12 steps:613 total_reward:135
+random count 546 with epsilon:0.892000, lr:0.001772
+episode:13 steps:506 total_reward:155
+random count 447 with epsilon:0.883000, lr:0.001753
+episode:14 steps:376 total_reward:75
+random count 338 with epsilon:0.874000, lr:0.001734
+episode:15 steps:573 total_reward:155
+random count 480 with epsilon:0.865000, lr:0.001715
+episode:16 steps:351 total_reward:45
+random count 294 with epsilon:0.856000, lr:0.001696
+episode:17 steps:503 total_reward:105
+random count 415 with epsilon:0.847000, lr:0.001677
+episode:18 steps:653 total_reward:135
+random count 556 with epsilon:0.838000, lr:0.001658
+episode:19 steps:911 total_reward:220
+random count 770 with epsilon:0.829000, lr:0.001639
+episode:20 steps:1000 total_reward:265
+random count 819 with epsilon:0.820000, lr:0.001620
+episode:21 steps:654 total_reward:125
+random count 533 with epsilon:0.811000, lr:0.001601
+episode:22 steps:703 total_reward:110
+random count 554 with epsilon:0.802000, lr:0.001582
+episode:23 steps:818 total_reward:185
+random count 651 with epsilon:0.793000, lr:0.001563
+episode:24 steps:644 total_reward:125
+random count 522 with epsilon:0.784000, lr:0.001544
+episode:25 steps:974 total_reward:555
+random count 744 with epsilon:0.775000, lr:0.001525
+episode:26 steps:1000 total_reward:295
+random count 762 with epsilon:0.766000, lr:0.001506
+episode:27 steps:623 total_reward:110
+random count 499 with epsilon:0.757000, lr:0.001487
+episode:28 steps:685 total_reward:120
+random count 500 with epsilon:0.748000, lr:0.001468
+episode:29 steps:640 total_reward:155
+random count 470 with epsilon:0.739000, lr:0.001449
+episode:30 steps:506 total_reward:105
+random count 376 with epsilon:0.730000, lr:0.001430
+episode:31 steps:1000 total_reward:245
+random count 736 with epsilon:0.721000, lr:0.001411
+episode:32 steps:930 total_reward:240
+random count 672 with epsilon:0.712000, lr:0.001392
+episode:33 steps:500 total_reward:110
+random count 338 with epsilon:0.703000, lr:0.001373
+episode:34 steps:525 total_reward:75
+random count 370 with epsilon:0.694000, lr:0.001354
+episode:35 steps:799 total_reward:155
+random count 522 with epsilon:0.685000, lr:0.001335
+episode:36 steps:563 total_reward:70
+random count 399 with epsilon:0.676000, lr:0.001316
+episode:37 steps:512 total_reward:45
+random count 342 with epsilon:0.667000, lr:0.001297
+episode:38 steps:643 total_reward:165
+random count 439 with epsilon:0.658000, lr:0.001278
+episode:39 steps:949 total_reward:235
+random count 605 with epsilon:0.649000, lr:0.001259
+episode:40 steps:1000 total_reward:535
+random count 642 with epsilon:0.640000, lr:0.001240
+episode:41 steps:656 total_reward:180
+random count 397 with epsilon:0.631000, lr:0.001221
+episode:42 steps:512 total_reward:105
+random count 325 with epsilon:0.622000, lr:0.001202
+episode:43 steps:651 total_reward:185
+random count 415 with epsilon:0.613000, lr:0.001183
+episode:44 steps:414 total_reward:50
+random count 234 with epsilon:0.604000, lr:0.001164
+episode:45 steps:561 total_reward:50
+random count 343 with epsilon:0.595000, lr:0.001145
+episode:46 steps:909 total_reward:115
+random count 540 with epsilon:0.586000, lr:0.001126
+episode:47 steps:627 total_reward:100
+random count 350 with epsilon:0.577000, lr:0.001107
+episode:48 steps:649 total_reward:105
+random count 368 with epsilon:0.568000, lr:0.001088
+episode:49 steps:783 total_reward:205
+random count 436 with epsilon:0.559000, lr:0.001069
+episode:50 steps:815 total_reward:380
+random count 441 with epsilon:0.550000, lr:0.001050
+episode:51 steps:558 total_reward:85
+random count 295 with epsilon:0.541000, lr:0.001031
+episode:52 steps:589 total_reward:50
+random count 304 with epsilon:0.532000, lr:0.001012
+episode:53 steps:485 total_reward:85
+random count 236 with epsilon:0.523000, lr:0.000993
+episode:54 steps:1000 total_reward:445
+random count 511 with epsilon:0.514000, lr:0.000974
+episode:55 steps:788 total_reward:150
+random count 366 with epsilon:0.505000, lr:0.000955
+episode:56 steps:551 total_reward:45
+random count 265 with epsilon:0.496000, lr:0.000936
+episode:57 steps:579 total_reward:60
+random count 288 with epsilon:0.487000, lr:0.000917
+episode:58 steps:865 total_reward:140
+random count 421 with epsilon:0.478000, lr:0.000898
+episode:59 steps:667 total_reward:80
+random count 312 with epsilon:0.469000, lr:0.000879
+episode:60 steps:579 total_reward:120
+random count 268 with epsilon:0.460000, lr:0.000860
+episode:61 steps:669 total_reward:120
+random count 310 with epsilon:0.451000, lr:0.000841
+episode:62 steps:401 total_reward:75
+random count 172 with epsilon:0.442000, lr:0.000822
+episode:63 steps:907 total_reward:365
+random count 382 with epsilon:0.433000, lr:0.000803
+episode:64 steps:1000 total_reward:280
+random count 420 with epsilon:0.424000, lr:0.000784
+episode:65 steps:629 total_reward:125
+random count 241 with epsilon:0.415000, lr:0.000765
+episode:66 steps:657 total_reward:90
+random count 245 with epsilon:0.406000, lr:0.000746
+episode:67 steps:628 total_reward:35
+random count 245 with epsilon:0.397000, lr:0.000727
+episode:68 steps:391 total_reward:80
+random count 134 with epsilon:0.388000, lr:0.000708
+episode:69 steps:797 total_reward:155
+random count 313 with epsilon:0.379000, lr:0.000689
+episode:70 steps:962 total_reward:435
+random count 382 with epsilon:0.370000, lr:0.000670
+episode:71 steps:885 total_reward:190
+random count 346 with epsilon:0.361000, lr:0.000651
+episode:72 steps:1000 total_reward:210
+random count 347 with epsilon:0.352000, lr:0.000632
+episode:73 steps:790 total_reward:335
+random count 274 with epsilon:0.343000, lr:0.000613
+episode:74 steps:1000 total_reward:230
+random count 322 with epsilon:0.334000, lr:0.000594
+episode:75 steps:355 total_reward:50
+random count 114 with epsilon:0.325000, lr:0.000575
+episode:76 steps:931 total_reward:240
+random count 332 with epsilon:0.316000, lr:0.000556
+episode:77 steps:405 total_reward:90
+random count 111 with epsilon:0.307000, lr:0.000537
+episode:78 steps:1000 total_reward:150
+random count 284 with epsilon:0.298000, lr:0.000518
+episode:79 steps:1000 total_reward:255
+random count 280 with epsilon:0.289000, lr:0.000499
+episode:80 steps:481 total_reward:20
+random count 132 with epsilon:0.280000, lr:0.000480
+episode:81 steps:455 total_reward:80
+random count 120 with epsilon:0.271000, lr:0.000461
+episode:82 steps:535 total_reward:60
+random count 133 with epsilon:0.262000, lr:0.000442
+episode:83 steps:1000 total_reward:190
+random count 244 with epsilon:0.253000, lr:0.000423
+episode:84 steps:834 total_reward:270
+random count 209 with epsilon:0.244000, lr:0.000404
+episode:85 steps:852 total_reward:400
+random count 186 with epsilon:0.235000, lr:0.000385
+episode:86 steps:944 total_reward:195
+random count 210 with epsilon:0.226000, lr:0.000366
+episode:87 steps:1000 total_reward:165
+random count 227 with epsilon:0.217000, lr:0.000347
+episode:88 steps:635 total_reward:75
+random count 127 with epsilon:0.208000, lr:0.000328
+episode:89 steps:609 total_reward:100
+random count 119 with epsilon:0.199000, lr:0.000309
+episode:90 steps:907 total_reward:155
+random count 173 with epsilon:0.190000, lr:0.000290
+episode:91 steps:1000 total_reward:170
+random count 184 with epsilon:0.181000, lr:0.000271
+episode:92 steps:708 total_reward:165
+random count 131 with epsilon:0.172000, lr:0.000252
+episode:93 steps:658 total_reward:160
+random count 106 with epsilon:0.163000, lr:0.000233
+episode:94 steps:835 total_reward:235
+random count 123 with epsilon:0.154000, lr:0.000214
+episode:95 steps:370 total_reward:85
+random count 46 with epsilon:0.145000, lr:0.000195
+episode:96 steps:523 total_reward:70
+random count 67 with epsilon:0.136000, lr:0.000176
+episode:97 steps:859 total_reward:250
+random count 118 with epsilon:0.127000, lr:0.000157
+episode:98 steps:859 total_reward:215
+random count 95 with epsilon:0.118000, lr:0.000138
+episode:99 steps:977 total_reward:250
+random count 106 with epsilon:0.109000, lr:0.000119
+[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 2, 4, 2, 2, 2, 2, 5, 2, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 4, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 5, 0, 1, 1, 1, 1, 2, 2, 0, 0, 5, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 0, 5, 0, 5, 5, 0, 0, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 1, 5, 1, 2, 5, 0, 1, 0, 5, 0, 5, 1, 0, 1, 2, 2, 5, 2, 1, 2, 1, 4, 2, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 5, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 0, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 0, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 2, 5, 5, 5, 2, 5, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 5, 3, 5, 3, 3, 3, 3, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 1, 4, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+show result steps 895 reward 265

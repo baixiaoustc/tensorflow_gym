@@ -4,15 +4,19 @@ import gym
 import tensorflow as tf
 import numpy as np
 import random
+import math
 from collections import deque
 from skimage.transform import resize
 from skimage.color import rgb2gray
-
+import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 
 # Hyper Parameters for DQN
 GAMMA = 0.9 # discount factor for target Q
-INITIAL_EPSILON = 0.5 # starting value of epsilon
+INITIAL_EPSILON = 1 # starting value of epsilon
 FINAL_EPSILON = 0.1 # final value of epsilon
+INITAL_LR = 0.002
+FINAL_LR = 0.0001
 REPLAY_SIZE = 10000 # experience replay buffer size
 BATCH_SIZE = 32 # size of minibatch
 
@@ -23,6 +27,7 @@ class DQN():
         self.replay_buffer = deque()
         # init some parameters
         self.time_step = 0
+        self.learning_rate = INITAL_LR
         self.epsilon = INITIAL_EPSILON
         self.state_dim = 84*84#env.observation_space.shape
         self.action_dim = env.action_space.n
@@ -44,10 +49,12 @@ class DQN():
 
             x_tensor_name = signature[signature_key].inputs[input_key].name
             y_tensor_name = signature[signature_key].outputs[output_key].name
-            t_tensor_name = signature[signature_key].outputs["TEST_STEP"].name
+            t_tensor_name = signature[signature_key].outputs["TEST_ROUND"].name # Just test if load is ok
 
             self.state_input = self.session.graph.get_tensor_by_name(x_tensor_name)
+            print "1. Direct Input: \t\t" + str(self.state_input.get_shape())
             self.Q_value = self.session.graph.get_tensor_by_name(y_tensor_name)
+            print "5. Affine2 \t\t\t" + str(self.Q_value.get_shape())
             self.T = self.session.graph.get_tensor_by_name(t_tensor_name)
             print "load", self.session.run(self.T)
         else:
@@ -55,7 +62,7 @@ class DQN():
             self.create_training_method()
             self.session.run(tf.global_variables_initializer())
 
-    def save_model(self, model_dir, tags):
+    def save_model(self, model_dir):
         # Create a builder to export the model
         builder = tf.saved_model.builder.SavedModelBuilder(model_dir)
         # Tag the model in order to be capable of restoring it specifying the tag set
@@ -67,7 +74,7 @@ class DQN():
         prediction_signature = (
             tf.saved_model.signature_def_utils.build_signature_def(
                 inputs={'x_input': tensor_info_x},
-                outputs={'y_output': tensor_info_y, "TEST_STEP": tensor_info_t},
+                outputs={'y_output': tensor_info_y, "TEST_ROUND": tensor_info_t},
                 method_name=tf.saved_model.signature_constants.PREDICT_METHOD_NAME))
 
         builder.add_meta_graph_and_variables(
@@ -78,6 +85,7 @@ class DQN():
 
     def create_Q_network(self):
         # network weights
+        self.lr = tf.placeholder(tf.float32)
         self.T = tf.Variable(2.0, name="bias")
         W1 = tf.Variable(tf.random_normal([8, 8, 1, 16], 0.00, 0.01), name="w_conv1")  #output will be of size (1, 21, 21, 16) for stride 4
         b1 = tf.Variable(tf.random_normal([1, 21, 21, 16], 0.00, 0.01), name="b_conv1")
@@ -112,10 +120,10 @@ class DQN():
 
     def create_training_method(self):
         self.action_input = tf.placeholder(tf.float32, [None, self.action_dim]) # one hot presentation
-        self.y_input = tf.placeholder(tf.float32, [None])
         Q_action = tf.reduce_sum(tf.multiply(self.Q_value, self.action_input), reduction_indices=1)
+        self.y_input = tf.placeholder(tf.float32, [None])
         self.cost = tf.reduce_mean(tf.square(self.y_input - Q_action))
-        self.optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.cost)
+        self.optimizer = tf.train.AdamOptimizer(self.lr).minimize(self.cost)
 
     def perceive(self, state, action, reward, next_state, done):
         one_hot_action = np.zeros(self.action_dim)
@@ -129,28 +137,26 @@ class DQN():
 
     def train_Q_network(self):
         self.time_step += 1
+
         # Step 1: obtain random minibatch from replay memory
         minibatch = random.sample(self.replay_buffer, BATCH_SIZE)
         state_batch = [data[0] for data in minibatch]
         action_batch = [data[1] for data in minibatch]
         reward_batch = [data[2] for data in minibatch]
         next_state_batch = [data[3] for data in minibatch]
+        done_batch = [data[4] for data in minibatch]
 
         # Step 2: calculate y
         y_batch = []
         Q_value_batch = self.Q_value.eval(feed_dict={self.state_input: next_state_batch})
         for i in range(0, BATCH_SIZE):
-            done = minibatch[i][4]
+            done = done_batch[i]
             if done:
                 y_batch.append(reward_batch[i])
             else:
                 y_batch.append(reward_batch[i] + GAMMA * np.max(Q_value_batch[i]))
 
-        self.optimizer.run(feed_dict={
-            self.y_input: y_batch,
-            self.action_input: action_batch,
-            self.state_input: state_batch
-            })
+        self.optimizer.run(feed_dict={self.y_input: y_batch, self.action_input: action_batch, self.state_input: state_batch, self.lr: self.learning_rate})
 
     def egreedy_action(self, observation):
         Q_value = self.Q_value.eval(feed_dict={self.state_input: [observation]})[0]
@@ -163,37 +169,41 @@ class DQN():
             return np.argmax(Q_value)
 
     def set_epsilon(self):
-        print 'random count %d with %f' % (self.random_count, self.epsilon)
+        print 'random count %d with epsilon:%f, lr:%f' % (self.random_count, self.epsilon, self.learning_rate)
         self.random_count = 0
         self.epsilon -= (INITIAL_EPSILON - FINAL_EPSILON)/EPISODE
+        self.learning_rate -=(INITAL_LR - FINAL_LR)/EPISODE
 
     def action(self, observation):
         return np.argmax(self.Q_value.eval(feed_dict={self.state_input: [observation]})[0])
 
-    def weight_variable(self, shape):
-        initial = tf.truncated_normal(shape)
-        return tf.Variable(initial)
-
-    def bias_variable(self, shape):
-        initial = tf.constant(0.01, shape=shape)
-        return tf.Variable(initial)
-
+    def save_figs(self, model_dir, train_episodes,  train_steps, train_rewards, test_episodes, test_steps, test_rewards):
+        plt.figure(1)
+        plt.subplot(2, 1, 1)
+        plot1=plt.plot(train_episodes, train_steps, 'r')
+        plot2=plt.plot(train_episodes, train_rewards, 'g')
+        plt.subplot(2, 1, 2)
+        plot3=plt.plot(test_episodes, test_steps, 'b')
+        plot4=plt.plot(test_episodes, test_rewards, 'y')
+        plt.savefig(model_dir+'/xxx.png')
 
 
 # ---------------------------------------------------------
 # Hyper Parameters
 ENV_NAME = 'SpaceInvadersDeterministic-v4'
-EPISODE = 10 # Episode limitation
+EPISODE = 1000 # Episode limitation
 STEP = 1000 # Step limitation in an episode
-TEST_EPISODE = 10
-TEST_STEP = 10 # The number of experiment TEST_STEP every 100 episode
-
+TEST_EPISODE = 100 # Test every TEST_EPISODE
+TEST_ROUND = 10 # The number of experiment TEST_ROUND every 100 episode
+RENDER = False
 
 def main(flags):
+    global RENDER
     # initialize OpenAI Gym env and dqn agent
     env = gym.make(ENV_NAME)
 
-    if flags.model_ops == "TEST_STEP":
+    RENDER = True if flags.render == 1 else False
+    if flags.model_ops == "test":
         test_sample(env)
         return
 
@@ -204,7 +214,14 @@ def main(flags):
     else:
         agent = DQN(env, "")
 
+    train_episodes = []
+    train_steps = []
+    train_rewards = []
+    test_episodes = []
+    test_steps = []
+    test_rewards = []
     for episode in xrange(EPISODE):
+        train_episodes.append(episode)
         # initialize task
         total_reward = 0
         state = env.reset()
@@ -223,72 +240,89 @@ def main(flags):
                 break
         print 'episode:%d steps:%d total_reward:%d' % (episode, steps + 1, total_reward)
         agent.set_epsilon()
+        train_steps.append(steps+1)
+        train_rewards.append(total_reward)
 
-        # TEST_STEP every 100 episodes
+        # TEST_ROUND every 100 episodes
         if episode % TEST_EPISODE == 0 and episode > 0:
-            total_reward = 0
-            for i in xrange(TEST_STEP):
+            test_episodes.append(episode)
+            test_step = 0
+            test_reward = 0
+            for i in xrange(TEST_ROUND):
                 state = env.reset()
-                env.render()
+                if RENDER:
+                    env.render()
                 observation = preprocess_image(state)
                 for j in xrange(STEP):
-                    env.render()
-                    action = agent.action(observation) # direct action for TEST_STEP
+                    test_step = j
+                    if RENDER:
+                        env.render()
+                    action = agent.action(observation) # direct action for TEST_ROUND
                     next_state, reward, done, _ = env.step(action)
                     # print 'episode:%d step:%d reward:%d' % (episode, i, reward)
                     next_observation = preprocess_image(next_state)
                     observation = next_observation
-                    total_reward += reward
+                    test_reward += reward
                     if done:
                         break
-            ave_reward = total_reward/TEST_STEP
-            print 'episode:', episode, 'Evaluation Average Reward:', ave_reward
-            if ave_reward >= 200:
-                break
+            ave_reward = test_reward/TEST_ROUND
+            print 'Test episode:', episode, 'Evaluation Average Reward:', ave_reward
+            test_steps.append(test_step+1)
+            test_rewards.append(ave_reward)
+
 
     show(env, agent)
 
     if flags.model_ops == "save":
         # save the model
-        agent.save_model(flags.model_dir, ["tag"])
+        agent.save_model(flags.model_dir)
+        agent.save_figs(flags.model_dir, train_episodes,  train_steps, train_rewards, test_episodes, test_steps, test_rewards)
 
 
 def test_sample(env):
+    global RENDER
     # Reset it, returns the starting frame
     state = env.reset()
     # Render
-    env.render()
+    if RENDER:
+        env.render()
 
     i = 0
     total_reward = 0
     while True:
-        env.render()
+        # Render
+        if RENDER:
+            env.render()
         # Perform a random action, returns the new frame, reward and whether the game is over
         action = env.action_space.sample()
         print action
         state, reward, done, _ = env.step(action)
         total_reward += reward
-        # Render
         i += 1
         if done:
             break
-    print 'TEST_STEP result steps %d reward %d' %(i, total_reward)
+    print 'TEST_ROUND result steps %d reward %d' %(i, total_reward)
 
 
 def show(env, agent):
     # Reset it, returns the starting frame
     state = env.reset()
     # Render
-    env.render()
+    if RENDER:
+        env.render()
 
+    actions = []
     i = 0
     total_reward = 0
     observation = preprocess_image(state)
+    # print observation[0, :, :]
+    # show_image(observation)
     while True:
         # print i
-        env.render()
-        action = agent.action(observation)  # direct action for TEST_STEP
-        print action
+        if RENDER:
+            env.render()
+        action = agent.action(observation)  # direct action for TEST_ROUND
+        actions.append(action)
         next_state, reward, done, _ = env.step(action)
         next_observation = preprocess_image(next_state)
         observation = next_observation
@@ -296,6 +330,7 @@ def show(env, agent):
         i += 1
         if done:
             break
+    print actions
     print 'show result steps %d reward %d' % (i, total_reward)
 
 
@@ -304,10 +339,32 @@ def show(env, agent):
 def preprocess_image(observation):  #takes about 20% of the running time!!!
     """ Grayscale, downscale and crop image for less data wrangling """
     #consider transfering this to TF
+    # plt.figure(figsize=(10, 10))
+    # plt.subplot(5, 2, 1)
+    # plt.imshow(observation)
     out = rgb2gray(observation)    #takes about 5% of the running time!!!               #2s
+    # plt.subplot(5, 2, 2)
+    # plt.imshow(out)
     out = resize(out, (110, 84))    #takes about 9% of running time!!!
+    # plt.subplot(5, 2, 3)
+    # plt.imshow(out)
     out = out[13:110 - 13, :]
-    return np.array(out).reshape(84, 84, 1).astype(np.uint8)
+    # plt.subplot(5, 2, 4)
+    # plt.imshow(out)
+    out = out.reshape(84, 84, 1)
+    # plt.subplot(5, 2, 5)
+    # plt.imshow(out.reshape(84, 84))
+    # plt.show()
+    return out
+
+
+def show_image(data):
+    fig = plt.figure(1)
+    # plt.axis('off')
+    xx = data.reshape(84, 84)
+    # print xx
+    plt.imshow(xx)
+    plt.show()
 
 
 
@@ -324,6 +381,12 @@ if __name__ == '__main__':
         type=str,
         default="none",
         help='load or export model.'
+    )
+    parser.add_argument(
+        '--render',
+        type=int,
+        default=0,
+        help='Render gym environment.'
     )
 
     FLAGS, unparsed = parser.parse_known_args()
